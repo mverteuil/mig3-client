@@ -21,6 +21,7 @@ classifiers = [
 mig3 = "mig3_client:mig3"
 
 [tool.poetry.dependencies]
+python = ">= 2.7 || >= 3.6 || >= 3.7"
 click = "^7.0"
 pytest = "< 4"
 pytest-json = "^0.4.0"
@@ -72,6 +73,8 @@ whitelist_externals =
     rm
 commands =
     rm -rf pip-wheel-metadata .report.json
+    pip install pip<19
+    poetry install -vvv
     poetry run pytest --cov tests/
 
 [testenv:py27]
