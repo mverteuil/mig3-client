@@ -72,7 +72,6 @@ whitelist_externals =
     rm
 commands =
     rm -rf pip-wheel-metadata .report.json
-    poetry install -v --develop .
     poetry run pytest --cov tests/
 
 [testenv:py27]

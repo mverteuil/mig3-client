@@ -4,17 +4,30 @@ Submit your results to Mig3 service.
 
 ## Basic setup
 
-Install the requirements:
+Install it:
 ```
-$ pip install -r requirements.txt
+$ pip install mig3-client
 ```
 
 Run the application:
 ```
-$ python -m mig3_client --help
+$ mig3 --help
 ```
 
-To run the tests:
+## Developer setup
+
+Install dependencies:
 ```
-    $ pytest
+$ poetry install
+```
+
+To run the tests for the current environment:
+```
+$ poetry shell
+$ py.test
+```
+
+To run the tests for all environments:
+```
+$ tox
 ```
