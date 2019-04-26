@@ -32,7 +32,7 @@
       "id": 1,
       "type": "test",
       "attributes": {
-        "name": "tests/test_converter.py::test_simple_report",
+        "name": "tests/test_examples.py::test_success",
         "duration": 1,
         "run_index": 0,
         "setup": {
