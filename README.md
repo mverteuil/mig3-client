@@ -1,4 +1,5 @@
 # mig3-client
+[![Build Status](https://travis-ci.com/mverteuil/mig3-client.svg?branch=master)](https://travis-ci.com/mverteuil/mig3-client)
 
 Submit your results to Mig3 service.
 
