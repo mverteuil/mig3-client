@@ -90,7 +90,7 @@ def test_happy_path(cli_runner, simple_report):
             f.write(json.dumps(simple_report))
 
         with mock.patch.multiple("mig3_client", requests=mock.DEFAULT, git=mock.DEFAULT) as patches:
-            patches["requests"].post().status_code = 200
+            patches["requests"].post().status_code = 201
 
             result = cli_runner.invoke(mig3, args=" ".join(ALL_ARGUMENTS.values()))
 
@@ -103,7 +103,7 @@ def test_happy_path(cli_runner, simple_report):
 
 
 def test_valid_report_with_regression(cli_runner, simple_report):
-    """Should submit report to Mig3 service"""
+    """Should fail with exit code 1 on regressions reported from Mig3 service"""
     with cli_runner.isolated_filesystem():
         with open(".report.json", "w") as f:
             f.write(json.dumps(simple_report))
@@ -114,7 +114,30 @@ def test_valid_report_with_regression(cli_runner, simple_report):
             result = cli_runner.invoke(mig3, args=" ".join(ALL_ARGUMENTS.values()))
 
     assert result.exception, result.output
+    assert result.exit_code == 1, result.exit_code
     assert "Reading report...OK" in result.output
     assert "Converting test data...OK" in result.output
     assert "Building submission...OK" in result.output
     assert "Sending submission...FAIL" in result.output
+
+
+def test_valid_report_with_bad_endpoint(cli_runner, simple_report):
+    """Should fail with useful error"""
+    with cli_runner.isolated_filesystem():
+        with open(".report.json", "w") as f:
+            f.write(json.dumps(simple_report))
+
+        with mock.patch.multiple("mig3_client", requests=mock.DEFAULT, git=mock.DEFAULT) as patches:
+            # Simulate 404 Not Found response
+            patches["requests"].post().status_code = 404
+            patches["requests"].post().content = "Page not found"
+            result = cli_runner.invoke(mig3, args=" ".join(ALL_ARGUMENTS.values()))
+
+    assert result.exception, result.output
+    assert result.exit_code == 1, result.exit_code
+    assert "Reading report...OK" in result.output
+    assert "Converting test data...OK" in result.output
+    assert "Building submission...OK" in result.output
+    assert "Sending submission...FAIL" in result.output
+    assert "RequestError" in result.output
+    assert "Page not found" in result.output

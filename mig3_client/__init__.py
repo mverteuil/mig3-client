@@ -7,13 +7,10 @@ import click
 import git
 import requests
 
+from .errors import Regression, RequestError
 from .vendors import poetry_version
 
 __version__ = poetry_version.extract(source_file=__file__)
-
-
-class Regression(Exception):
-    """Raised when Mig3 service rejects the submission request."""
 
 
 class log_attempt(object):
@@ -95,15 +92,17 @@ def mig3(project, configuration, endpoint, token, report, dry_run):
     with log_attempt("Building submission"):
         submission = JobSubmissionBuilder(project, configuration, test_data).build()
 
-    with log_attempt("Sending submission"):
-        if not dry_run:
-            response = requests.post(
-                endpoint, data=submission, headers={"Authorization": "Bearer {token}".format(**locals())}
-            )
-            if response.status_code != 200:
-                raise Regression(response.content)
-        else:
-            json.dump(submission, sys.stdout)
+    if dry_run:
+        json.dump(submission, sys.stdout, indent=2)
+    else:
+        with log_attempt("Sending submission"):
+            headers = {"Authorization": "Bearer {token}".format(**locals())}
+            response = requests.post(endpoint, data=submission, headers=headers)
+            if response.status_code != 201:
+                if response.status_code == 409:
+                    raise Regression(response.content)
+                else:
+                    raise RequestError(response.content)
 
 
 if __name__ == "__main__":
