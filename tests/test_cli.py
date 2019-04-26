@@ -141,3 +141,23 @@ def test_valid_report_with_bad_endpoint(cli_runner, simple_report):
     assert "Sending submission...FAIL" in result.output
     assert "RequestError" in result.output
     assert "Page not found" in result.output
+
+
+def test_valid_report_with_dry_run(cli_runner, simple_report):
+    """Should display submission on stdout"""
+    with cli_runner.isolated_filesystem():
+        with open(".report.json", "w") as f:
+            f.write(json.dumps(simple_report))
+
+        with mock.patch("mig3_client.git"):
+            arguments = ALL_ARGUMENTS.copy()
+            arguments["dry_run"] = "-n"
+            result = cli_runner.invoke(mig3, args=" ".join(arguments.values()))
+
+    assert result.exception, result.output
+    assert result.exit_code == 1, result.exit_code
+    assert "Reading report...OK" in result.output
+    assert "Converting test data...OK" in result.output
+    assert "Building submission...OK" in result.output
+    assert "Sending submission..." not in result.output
+    assert '"author":' in result.output
