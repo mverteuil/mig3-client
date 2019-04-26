@@ -109,12 +109,12 @@ def test_valid_report_with_regression(cli_runner, simple_report):
             f.write(json.dumps(simple_report))
 
         with mock.patch.multiple("mig3_client", requests=mock.DEFAULT, git=mock.DEFAULT) as patches:
-            patches["requests"].post().status_code = 200
-
+            # Simulate 409 Conflict response
+            patches["requests"].post().status_code = 409
             result = cli_runner.invoke(mig3, args=" ".join(ALL_ARGUMENTS.values()))
 
-    assert not result.exception, result.output
+    assert result.exception, result.output
     assert "Reading report...OK" in result.output
     assert "Converting test data...OK" in result.output
     assert "Building submission...OK" in result.output
-    assert "Sending submission...OK" in result.output
+    assert "Sending submission...FAIL" in result.output
