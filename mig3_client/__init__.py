@@ -14,6 +14,21 @@ __version__ = poetry_version.extract(source_file=__file__)
 
 
 class log_attempt(object):
+    """Log message and result for code block contained in the context to stderr.
+
+    Parameters
+    ----------
+    message : str
+        Indicates what is being attempted to the user
+
+    Examples
+    --------
+    with log_attempt("Removing temporary files"):
+        for file in glob.glob("*.tmp"):
+            os.remove(file)
+
+    """
+
     def __init__(self, message):
         self._message = message
 
@@ -30,6 +45,15 @@ class log_attempt(object):
 
 
 class ReportConverter(object):
+    """Convert JSON contents from pytest-json output format to Mig3 submission format.
+
+    Parameters
+    ----------
+    report : dict
+        Report contents, expects caller to parse JSON document into python dict before passing.
+
+    """
+
     def __init__(self, report):
         self.report = report
 
@@ -39,28 +63,40 @@ class ReportConverter(object):
             yield {"module": module, "test": test, "outcome": test_document["attributes"]["outcome"]}
 
     def convert(self):
+        """Convert the pytest-json tests objects into Mig3 objects."""
         return [test for test in self._tests()]
 
 
 class JobSubmissionBuilder(object):
-    """Build the job submission for Mig3."""
+    """Build the job submission for Mig3.
+
+    Parameters
+    ----------
+    project : str
+        Project ID
+    configuration : str
+        Configuration ID
+    test_data : list
+        Test results to submit to Mig3 service. Generally the result of `ReportConverter.convert()`.
+
+    """
 
     def __init__(self, project, configuration, test_data):
         self.project = project
         self.configuration = configuration
         self.test_data = test_data
 
-    def _get_version(self):
+    def _get_project_version(self):
         repository = git.Repo(search_parent_directories=True)
         return repository.head.object.hexsha
 
     def build(self):
         return {
-            "project_version": self._get_version(),
+            "project_version": self._get_project_version(),
             "tests": self.test_data,
             "project": self.project,
             "configuration": self.configuration,
-            "mig3_version": __version__,
+            "mig3_client": __version__,
         }
 
 
@@ -77,7 +113,6 @@ def mig3(project, configuration, endpoint, token, report, dry_run):
 
     Run this command after running py.test with json results enabled to validate the test outcome:
         py.test --json=.report.json
-
 
     The following environment variables can be used in lieu of passing options: MIG3_PROJECT, MIG3_CONFIGURATION,
     MIG3_ENDPOINT, MIG3_TOKEN, MIG3_DRY_RUN
