@@ -1,5 +1,5 @@
 import json
-from unittest import mock
+import mock
 
 from mig3_client import mig3
 
