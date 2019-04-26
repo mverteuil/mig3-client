@@ -33,6 +33,7 @@ tomlkit = "^0.5.3"
 [tool.poetry.dev-dependencies]
 pre-commit = "^1.15"
 pytest-cov = "^2.6.1"
+mock = "< 2"
 
 [tool.black]
 line-length = 120
