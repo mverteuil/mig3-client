@@ -80,7 +80,7 @@ def test_invalid_report(cli_runner):
 
     assert result.exception
     assert "Reading report...FAIL" in result.output
-    assert "No JSON object could be decoded" in result.output
+    assert "JSON" in result.output
 
 
 def test_happy_path(cli_runner, simple_report):
