@@ -86,13 +86,13 @@ class JobSubmissionBuilder(object):
         self.configuration = configuration
         self.test_data = test_data
 
-    def _get_project_version(self):
+    def _get_version_info(self):
         repository = git.Repo(search_parent_directories=True)
-        return repository.head.object.hexsha
+        return {"author": repository.head.object.author, "hash": repository.head.object.hexsha}
 
     def build(self):
         return {
-            "project_version": self._get_project_version(),
+            "version": self._get_version_info(),
             "tests": self.test_data,
             "project": self.project,
             "configuration": self.configuration,
