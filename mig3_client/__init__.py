@@ -72,18 +72,15 @@ class JobSubmissionBuilder(object):
 
     Parameters
     ----------
-    project : str
-        Project ID
-    configuration : str
-        Configuration ID
+    target : str
+        Target configuration ID
     test_data : list
         Test results to submit to Mig3 service. Generally the result of `ReportConverter.convert()`.
 
     """
 
-    def __init__(self, project, configuration, test_data):
-        self.project = project
-        self.configuration = configuration
+    def __init__(self, target, test_data):
+        self.target = target
         self.test_data = test_data
 
     def _get_version_info(self):
@@ -94,28 +91,25 @@ class JobSubmissionBuilder(object):
         return {
             "version": self._get_version_info(),
             "tests": self.test_data,
-            "project": self.project,
-            "configuration": self.configuration,
+            "target": self.target,
             "mig3_client": __version__,
         }
 
 
 @click.command()
-@click.option("-p", "--project", required=True, help="Project ID (from Mig3 service).")
-@click.option("-c", "--configuration", required=True, help="Configuration ID (from mig3 service).")
-@click.option("--endpoint", required=True, help="Mig3 job submission endpoint.")
+@click.option("-t", "--target", required=True, help="Target ID (from Mig3 service).")
+@click.option("--endpoint", required=True, help="Mig3 build submission endpoint.")
 @click.option("--token", required=True, help="Mig3 builder authorization token.")
 @click.option("--report", default=".report.json", type=click.File(), help="Specify the pytest-json report filename.")
 @click.option("-n", "--dry-run", is_flag=True, help="Show report on stdout instead of submitting it to Mig3 service.")
 @click.version_option(__version__)
-def mig3(project, configuration, endpoint, token, report, dry_run):
+def mig3(target, endpoint, token, report, dry_run):
     """Validate test results with mig3 service.
 
     Run this command after running py.test with json results enabled to validate the test outcome:
         py.test --json=.report.json
 
-    The following environment variables can be used in lieu of passing options: MIG3_PROJECT, MIG3_CONFIGURATION,
-    MIG3_ENDPOINT, MIG3_TOKEN, MIG3_DRY_RUN
+    The following environment variables can be used in lieu of passing options: MIG3_TARGET, MIG3_ENDPOINT, MIG3_TOKEN
 
     """
     with log_attempt("Reading report"):
@@ -125,7 +119,7 @@ def mig3(project, configuration, endpoint, token, report, dry_run):
         test_data = ReportConverter(report_json).convert()
 
     with log_attempt("Building submission"):
-        submission = JobSubmissionBuilder(project, configuration, test_data).build()
+        submission = JobSubmissionBuilder(target, test_data).build()
 
     if dry_run:
         json.dump(submission, sys.stdout, indent=2)

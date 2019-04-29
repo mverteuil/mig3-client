@@ -1,40 +1,23 @@
 import json
 
 import mock
+
 from mig3_client import mig3
 
-ALL_ARGUMENTS = {
-    "configuration": "--configuration c",
-    "endpoint": "--endpoint e",
-    "project": "--project p",
-    "token": "--token t",
-}
+ALL_ARGUMENTS = {"target": "--target t", "endpoint": "--endpoint e", "token": "--token token"}
 
 
-def test_no_project(cli_runner):
-    """Should require project id"""
+def test_no_target_configuration(cli_runner):
+    """Should require target id"""
     arguments = ALL_ARGUMENTS.copy()
-    del arguments["project"]
+    del arguments["target"]
 
     result = cli_runner.invoke(mig3, " ".join(arguments.values()))
 
     assert result.exception
     assert "Missing option" in result.output
-    assert "-p" in result.output
-    assert "--project" in result.output
-
-
-def test_no_configuration(cli_runner):
-    """Should require configuration id"""
-    arguments = ALL_ARGUMENTS.copy()
-    del arguments["configuration"]
-
-    result = cli_runner.invoke(mig3, " ".join(arguments.values()))
-
-    assert result.exception
-    assert "Missing option" in result.output
-    assert "-c" in result.output
-    assert "--configuration" in result.output
+    assert "-t" in result.output
+    assert "--target" in result.output
 
 
 def test_no_endpoint(cli_runner):
