@@ -129,7 +129,7 @@ def mig3(target, build, endpoint, token, report, dry_run):
     else:
         with log_attempt("Sending submission"):
             headers = {"Authorization": "Bearer {token}".format(**locals())}
-            response = requests.post(endpoint, data=submission, headers=headers)
+            response = requests.post(endpoint, json=submission, headers=headers)
             if response.status_code != 201:
                 if response.status_code == 409:
                     raise Regression(response.content)
