@@ -4,7 +4,20 @@ import mock
 
 from mig3_client import mig3
 
-ALL_ARGUMENTS = {"target": "--target t", "endpoint": "--endpoint e", "token": "--token token"}
+ALL_ARGUMENTS = {"target": "--target t", "build": "--build b", "endpoint": "--endpoint e", "token": "--token token"}
+
+
+def test_no_build_number(cli_runner):
+    """Should require build number"""
+    arguments = ALL_ARGUMENTS.copy()
+    del arguments["build"]
+
+    result = cli_runner.invoke(mig3, " ".join(arguments.values()))
+
+    assert result.exception
+    assert "Missing option" in result.output
+    assert "-b" in result.output
+    assert "--build" in result.output
 
 
 def test_no_target_configuration(cli_runner):

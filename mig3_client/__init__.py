@@ -98,12 +98,13 @@ class JobSubmissionBuilder(object):
 
 @click.command()
 @click.option("-t", "--target", required=True, help="Target ID (from Mig3 service).")
+@click.option("-b", "--build", required=True, help="Unique job, task, workflow, build, &c number.")
 @click.option("--endpoint", required=True, help="Mig3 build submission endpoint.")
 @click.option("--token", required=True, help="Mig3 builder authorization token.")
 @click.option("--report", default=".report.json", type=click.File(), help="Specify the pytest-json report filename.")
 @click.option("-n", "--dry-run", is_flag=True, help="Show report on stdout instead of submitting it to Mig3 service.")
 @click.version_option(__version__)
-def mig3(target, endpoint, token, report, dry_run):
+def mig3(target, build, endpoint, token, report, dry_run):
     """Validate test results with mig3 service.
 
     Run this command after running py.test with json results enabled to validate the test outcome:
