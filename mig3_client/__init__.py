@@ -60,7 +60,7 @@ class ReportConverter(object):
     def _tests(self):
         for test_document in self.report["included"]:
             module, test = test_document["attributes"]["name"].split("::")
-            yield {"module": module, "test": test, "outcome": test_document["attributes"]["outcome"]}
+            yield {"module": module, "test": test, "result": test_document["attributes"]["outcome"]}
 
     def convert(self):
         """Convert the pytest-json tests objects into Mig3 objects."""
@@ -91,7 +91,7 @@ class JobSubmissionBuilder(object):
     def build(self):
         return {
             "version": self._get_version_info(),
-            "tests": self.test_data,
+            "results": self.test_data,
             "target": self.target,
             "number": self.number,
             "mig3_client": __version__,

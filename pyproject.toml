@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mig3-client"
-version = "0.3.2"
+version = "0.4.0"
 description = "Send test result to Mig3 service"
 authors = ["Matthew de Verteuil <onceuponajooks@gmail.com>"]
 license = "MIT"

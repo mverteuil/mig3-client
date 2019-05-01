@@ -26,8 +26,8 @@ def test_convert_test_name(simple_report):
     assert converted_test.get("test") == "test_success", converted_test
 
 
-def test_convert_outcome(simple_report):
-    """Should extract outcome from report item."""
+def test_convert_result(simple_report):
+    """Should extract result from report item."""
     result = ReportConverter(simple_report).convert()
     converted_test = result[0]
-    assert converted_test.get("outcome") == "passed", converted_test
+    assert converted_test.get("result") == "passed", converted_test

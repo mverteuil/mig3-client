@@ -22,9 +22,9 @@ def test_build_number(converted_tests):
 
 
 def test_tests():
-    """Should contain tests used to initialize the builder"""
+    """Should contain test results used to initialize the builder"""
     submission = JobSubmissionBuilder("t", "b", ["anything"]).build()
-    assert submission.get("tests") == ["anything"], submission
+    assert submission.get("results") == ["anything"], submission
 
 
 def test_version_details(converted_tests):
