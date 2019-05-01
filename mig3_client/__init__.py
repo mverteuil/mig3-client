@@ -79,8 +79,9 @@ class JobSubmissionBuilder(object):
 
     """
 
-    def __init__(self, target, test_data):
+    def __init__(self, target, number, test_data):
         self.target = target
+        self.number = number
         self.test_data = test_data
 
     def _get_version_info(self):
@@ -92,6 +93,7 @@ class JobSubmissionBuilder(object):
             "version": self._get_version_info(),
             "tests": self.test_data,
             "target": self.target,
+            "number": self.number,
             "mig3_client": __version__,
         }
 
@@ -120,7 +122,7 @@ def mig3(target, build, endpoint, token, report, dry_run):
         test_data = ReportConverter(report_json).convert()
 
     with log_attempt("Building submission"):
-        submission = JobSubmissionBuilder(target, test_data).build()
+        submission = JobSubmissionBuilder(target, build, test_data).build()
 
     if dry_run:
         json.dump(submission, sys.stdout, indent=2)
