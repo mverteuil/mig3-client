@@ -9,6 +9,11 @@ from mig3_client import ICON_FAILURE, ICON_SUCCESS, Regression, RequestError, mi
 ALL_ARGUMENTS = {"target": "--target t", "build": "--build b", "endpoint": "--endpoint e", "token": "--token token"}
 
 
+def fmt(message):
+    """F-string substitute for PY2"""
+    return message.format(ICON_SUCCESS=ICON_SUCCESS, ICON_FAILURE=ICON_FAILURE)
+
+
 def test_no_build_number(cli_runner):
     """Should require build number"""
     arguments = ALL_ARGUMENTS.copy()
@@ -77,8 +82,8 @@ def test_invalid_report(cli_runner):
         result = cli_runner.invoke(mig3, args=" ".join(ALL_ARGUMENTS.values()))
 
     assert result.exception
-    assert f"Reading report...{ICON_FAILURE}" in result.output
-    assert "JSON" in type(result.exception).__name__
+    assert fmt("Reading report...{ICON_FAILURE}") in result.output
+    assert any("JSON" in value for value in [type(result.exception).__name__, str(result.exception)])
 
 
 def test_happy_path(cli_runner, simple_report):
@@ -94,10 +99,10 @@ def test_happy_path(cli_runner, simple_report):
 
     assert not result.exception, result.output
     assert result.exit_code == 0, result.status_code
-    assert f"Reading report...{ICON_SUCCESS}" in result.output
-    assert f"Converting test data...{ICON_SUCCESS}" in result.output
-    assert f"Building submission...{ICON_SUCCESS}" in result.output
-    assert f"Sending submission...{ICON_SUCCESS}" in result.output
+    assert fmt("Reading report...{ICON_SUCCESS}") in result.output
+    assert fmt("Converting test data...{ICON_SUCCESS}") in result.output
+    assert fmt("Building submission...{ICON_SUCCESS}") in result.output
+    assert fmt("Sending submission...{ICON_SUCCESS}") in result.output
 
 
 def test_valid_report_with_regression(cli_runner, simple_report):
@@ -113,10 +118,10 @@ def test_valid_report_with_regression(cli_runner, simple_report):
 
     assert result.exception, result.output
     assert result.exit_code == Regression.exit_code, result.exit_code
-    assert f"Reading report...{ICON_SUCCESS}" in result.output
-    assert f"Converting test data...{ICON_SUCCESS}" in result.output
-    assert f"Building submission...{ICON_SUCCESS}" in result.output
-    assert f"Sending submission...{ICON_FAILURE}" in result.output
+    assert fmt("Reading report...{ICON_SUCCESS}") in result.output
+    assert fmt("Converting test data...{ICON_SUCCESS}") in result.output
+    assert fmt("Building submission...{ICON_SUCCESS}") in result.output
+    assert fmt("Sending submission...{ICON_FAILURE}") in result.output
 
 
 def test_valid_report_with_bad_endpoint(cli_runner, simple_report):
@@ -133,10 +138,10 @@ def test_valid_report_with_bad_endpoint(cli_runner, simple_report):
 
     assert result.exception, result.output
     assert result.exit_code == RequestError.exit_code, result.exit_code
-    assert f"Reading report...{ICON_SUCCESS}" in result.output
-    assert f"Converting test data...{ICON_SUCCESS}" in result.output
-    assert f"Building submission...{ICON_SUCCESS}" in result.output
-    assert f"Sending submission...{ICON_FAILURE}" in result.output
+    assert fmt("Reading report...{ICON_SUCCESS}") in result.output
+    assert fmt("Converting test data...{ICON_SUCCESS}") in result.output
+    assert fmt("Building submission...{ICON_SUCCESS}") in result.output
+    assert fmt("Sending submission...{ICON_FAILURE}") in result.output
     assert "Page not found" in result.output
 
 
@@ -156,8 +161,8 @@ def test_valid_report_with_dry_run(cli_runner, simple_report):
 
     assert not result.exception, result.output
     assert result.exit_code == 0, result.exit_code
-    assert f"Reading report...{ICON_SUCCESS}" in result.output
-    assert f"Converting test data...{ICON_SUCCESS}" in result.output
-    assert f"Building submission...{ICON_SUCCESS}" in result.output
+    assert fmt("Reading report...{ICON_SUCCESS}") in result.output
+    assert fmt("Converting test data...{ICON_SUCCESS}") in result.output
+    assert fmt("Building submission...{ICON_SUCCESS}") in result.output
     assert "Sending submission..." not in result.output
     assert '"author":' in result.output, result.output

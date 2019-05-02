@@ -5,7 +5,11 @@ class SubmissionError(click.ClickException):
     """Base class for error cases when submitting to Mig3 service."""
 
     def show(self, file=None):
-        click.secho(f"{self.__class__.__name__}: {self.format_message()}", err=True, fg="red")
+        click.secho(
+            "{class_name}: {message}".format(class_name=self.__class__.__name__, message=self.format_message()),
+            err=True,
+            fg="red",
+        )
 
 
 class Regression(SubmissionError):
