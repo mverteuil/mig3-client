@@ -14,6 +14,9 @@ from .vendors import poetry_version
 
 __version__ = poetry_version.extract(source_file=__file__)
 
+ICON_SUCCESS = "✈"
+ICON_FAILURE = "✈🔥"
+
 
 class log_attempt(object):
     """Log message and result for code block contained in the context to stderr.
@@ -40,10 +43,10 @@ class log_attempt(object):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         if exc_type or exc_val or exc_tb:
-            click.secho("✈🔥".format(**locals()), err=True, fg="red")
+            click.secho(ICON_FAILURE, err=True, fg="red")
             raise exc_val
         else:
-            click.secho("✈", err=True, fg="green")
+            click.secho(ICON_SUCCESS, err=True, fg="green")
 
 
 class ReportConverter(object):
