@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from __future__ import absolute_import, unicode_literals
 
 import json
@@ -38,10 +40,10 @@ class log_attempt(object):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         if exc_type or exc_val or exc_tb:
-            click.secho("FAIL\n{exc_type}: {exc_val}".format(**locals()), err=True, fg="red")
-            exit(1)
+            click.secho("✈🔥".format(**locals()), err=True, fg="red")
+            raise exc_val
         else:
-            click.secho("OK", err=True, fg="green")
+            click.secho("✈", err=True, fg="green")
 
 
 class ReportConverter(object):
@@ -132,9 +134,9 @@ def mig3(target, build, endpoint, token, report, dry_run):
             response = requests.post(endpoint, json=submission, headers=headers)
             if response.status_code != 201:
                 if response.status_code == 409:
-                    raise Regression(response.content)
+                    raise Regression(response.json()["detail"])
                 else:
-                    raise RequestError(response.content)
+                    raise RequestError(response.content.decode("utf-8"))
 
 
 if __name__ == "__main__":
