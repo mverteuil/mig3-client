@@ -72,8 +72,8 @@ class ReportConverter(object):
         return [test for test in self._tests()]
 
 
-class JobSubmissionBuilder(object):
-    """Build the job submission for Mig3.
+class SubmissionBuilder(object):
+    """Build the submission for the Mig3 service endpoint.
 
     Parameters
     ----------
@@ -94,6 +94,7 @@ class JobSubmissionBuilder(object):
         return {"author": repository.head.object.author.email, "hash": repository.head.object.hexsha}
 
     def build(self):
+        """Generate the submission."""
         return {
             "version": self._get_version_info(),
             "results": self.test_data,
@@ -127,7 +128,7 @@ def mig3(target, build, endpoint, token, report, dry_run):
         test_data = ReportConverter(report_json).convert()
 
     with log_attempt("Building submission"):
-        submission = JobSubmissionBuilder(target, build, test_data).build()
+        submission = SubmissionBuilder(target, build, test_data).build()
 
     if dry_run:
         json.dump(submission, sys.stdout, indent=2)

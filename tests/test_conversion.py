@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from mig3_client import ReportConverter
 
 

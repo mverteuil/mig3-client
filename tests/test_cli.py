@@ -1,9 +1,9 @@
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import json
 
 import mock
-
 from mig3_client import ICON_FAILURE, ICON_SUCCESS, Regression, RequestError, mig3
 
 ALL_ARGUMENTS = {"target": "--target t", "build": "--build b", "endpoint": "--endpoint e", "token": "--token token"}

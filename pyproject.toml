@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mig3-client"
-version = "0.5.2"
+version = "0.5.3"
 description = "Send test result to Mig3 service"
 authors = ["Matthew de Verteuil <onceuponajooks@gmail.com>"]
 license = "MIT"
@@ -57,11 +57,13 @@ exclude = '''
 [tool.isort]
 force_grid_wrap = 0
 include_trailing_comma = true
+known_third_party = "click,git,mig3_client,mock,pathlib2,pytest,requests,tomlkit"
 line_length = 120
 multi_line_output = 3
+no_lines_before = "LOCALFOLDER"
+sections = "FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER"
 use_parentheses = true
 verbose = true
-known_third_party = "click,git,mock,pathlib2,pytest,requests,tomlkit"
 
 [tool.tox]
 legacy_tox_ini = """

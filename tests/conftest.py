@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 
 import pathlib2 as pathlib
