@@ -18,6 +18,12 @@ ICON_SUCCESS = "✈"
 ICON_FAILURE = "✈🔥"
 
 
+def get_version_info():
+    """Retrieve version details from current Git HEAD."""
+    repository = git.Repo(search_parent_directories=True)
+    return {"author": repository.head.object.author.email, "hash": repository.head.object.hexsha}
+
+
 class log_attempt(object):
     """Log message and result for code block contained in the context to stderr.
 
@@ -89,14 +95,10 @@ class SubmissionBuilder(object):
         self.number = number
         self.test_data = test_data
 
-    def _get_version_info(self):
-        repository = git.Repo(search_parent_directories=True)
-        return {"author": repository.head.object.author.email, "hash": repository.head.object.hexsha}
-
     def build(self):
         """Generate the submission."""
         return {
-            "version": self._get_version_info(),
+            "version": get_version_info(),
             "results": self.test_data,
             "target": self.target,
             "number": self.number,
