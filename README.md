@@ -6,6 +6,7 @@ Submit your results to Mig3 service.
 [![Build Status](https://travis-ci.com/mverteuil/mig3-client.svg?branch=master)](https://travis-ci.com/mverteuil/mig3-client)
 ![Supported Python Versions](https://img.shields.io/pypi/pyversions/mig3-client.svg)
 [![Project License](https://img.shields.io/pypi/l/mig3-client.svg?color=blue)](https://github.com/mverteuil/mig3-client/blob/master/LICENSE)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmverteuil%2Fmig3-client.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmverteuil%2Fmig3-client?ref=badge_shield)
 ![Project Status](https://img.shields.io/pypi/status/mig3-client.svg)
 [![PyPI version](https://img.shields.io/pypi/v/mig3-client.svg)](https://badge.fury.io/py/mig3-client)
 [![PyPI downloads](https://img.shields.io/pypi/dm/mig3-client.svg?color=darklime)](https://pypi.org/project/mig3-client/)
@@ -43,6 +44,6 @@ To run the tests for all environments:
 $ tox
 ```
 
-
 ## License
+
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmverteuil%2Fmig3-client.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmverteuil%2Fmig3-client?ref=badge_large)

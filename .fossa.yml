@@ -1,0 +1,12 @@
+version: 2
+cli:
+  fetcher: git
+  project: https://github.com/mverteuil/mig3-client
+analyze:
+  modules:
+    - name: https://github.com/mverteuil/mig3-client
+      type: pip
+      target: .
+      path: .
+      options:
+        strategy: requirements
