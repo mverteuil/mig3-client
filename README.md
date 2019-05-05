@@ -1,5 +1,5 @@
-# mig3-client
-Submit your results to Mig3 service.
+# ![Mig3-Client](https://repository-images.githubusercontent.com/183148001/d7c73680-6eaf-11e9-88b4-269c8d788541)
+## mig3-client: Submit your results to Mig3 service.
 
 [![Codacy Quality Badge](https://api.codacy.com/project/badge/Grade/8fbaac0868ee4261915b7c48ba8ee881)](https://app.codacy.com/app/mverteuil/mig3?utm_source=github.com&utm_medium=referral&utm_content=mverteuil/mig3-client&utm_campaign=Badge_Grade_Dashboard)
 [![Codacy Coverage Badge](https://api.codacy.com/project/badge/Coverage/fcd5f70f0c294c948c70910456661093)](https://www.codacy.com/app/mverteuil/mig3-client?utm_source=github.com&utm_medium=referral&utm_content=mverteuil/mig3-client&utm_campaign=Badge_Coverage)
