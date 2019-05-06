@@ -16,7 +16,7 @@
 
 ## See Also
 
--   [mig3](https://github.com/mverteuil/mig3-client): Detect regressions in your python3 migration!
+-   [mig3](https://github.com/mverteuil/mig3): Detect regressions in your python3 migration!
 
 ## Basic setup
 
