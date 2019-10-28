@@ -34,7 +34,7 @@ gitpython = "^2.1"
 tomlkit = "^0.5.3"
 
 [tool.poetry.dev-dependencies]
-pre-commit = "^1.18"
+pre-commit = "^1.19"
 pytest-cov = "^2.8.1"
 mock = "*"
 
